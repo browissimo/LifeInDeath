@@ -36,12 +36,35 @@ namespace LifeInDeath
 
                 cell.xPos = x;
                 cell.yPos = y;
-
                 x++;
             }
         }
 
-        private int CountNeighbours(int x, int y)
+        //private int CountNeighbours(int x, int y)
+        //{
+        //    int count = 0;
+
+        //    for (int i = -1; i < 2; i++)
+        //    {
+        //        for (int j = -1; j < 2; j++)
+        //        {
+        //            int col = (x + i + cols) % cols;
+        //            int row = (y + j + rows) % rows;
+
+        //            bool isSelfChecking = col == x && row == y;
+        //            var hasLife = field[col, row].isAlife;
+
+        //            if (hasLife && !isSelfChecking)
+        //            {
+        //                count++;
+        //            }
+        //        }
+        //    }
+
+        //    return count;
+        //}
+
+        private int CountNeighbours(Cell cell)
         {
             int count = 0;
 
@@ -49,11 +72,11 @@ namespace LifeInDeath
             {
                 for (int j = -1; j < 2; j++)
                 {
-                    int col = (x + i + cols) % cols;
-                    int row = (y + j + rows) % rows;
+                    int cellCol = (cell.xPos + i + cols) % cols;
+                    int cellRow = (cell.yPos + j + rows) % rows;
 
-                    bool isSelfChecking = col == x && row == y;
-                    var hasLife = field[col, row].isAlife;
+                    bool isSelfChecking = cellCol == x && cellRow == y;
+                    var hasLife = field[cellCol, cellRow].isAlife;
 
                     if (hasLife && !isSelfChecking)
                     {
@@ -69,25 +92,18 @@ namespace LifeInDeath
         {
             var newField = field;
 
-            for (int x = 0; x < cols; x++)
+            foreach (var cell in newField)
             {
-                for (int y = 0; y < rows; y++)
-                {
-                    var neighboursCount = CountNeighbours(x , y);
-                    var haslLife = field[x, y].isAlife;
+                var neighboursCount = CountNeighbours(cell);
+                var hasLife = cell.isAlife;
 
-                    if (!haslLife && neighboursCount == 3)
-                    {
-                        newField[x, y].isAlife = true;
-                    }
-                    else if (haslLife && neighboursCount < 2 || neighboursCount > 3)
-                    {
-                        newField[x, y].isAlife = false;
-                    }
-                    else
-                    {
-                        newField[x, y] = field[x, y];
-                    }
+                if (!hasLife && neighboursCount == 3)
+                {
+                    cell.isAlife = true;
+                }
+                else if (hasLife && neighboursCount < 2 || neighboursCount > 3)
+                {
+                    cell.isAlife = false;
                 }
             }
 
@@ -95,41 +111,37 @@ namespace LifeInDeath
             CurrentGeneration++;
         }
 
-        public Cell[,] GetCurrentGeneration()
+        public Cell[] GetCurrentGeneration()
         {
-            var result = new Cell[cols, rows];
-            for (int x = 0; x < cols; x++)
-            {
-                for (int y = 0; y < rows; y++)
-                {
-                    result[x,y] = field[x, y];
-                }
-            }
+            var result = new Cell[cols * rows];
+            
+            Array.Copy(field, result, cols * rows);
+            
             return result;
         }
 
-        private bool ValidateCellPosition(int x, int y)
+        private bool ValidateCellPosition(Cell cell)
         {
-            return x >= 0 && y >= 0 && x < cols && y < rows;
+            return cell.xPos >= 0 && cell.yPos >= 0 && cell.xPos < cols && cell.yPos < rows;
         }
 
-        private void UpdateCell(int x, int y, bool state)
+        private void UpdateCell(Cell cell, bool state)
         {
-            if (ValidateCellPosition(x,y))
+            if (ValidateCellPosition(cell))
             {
-                field[x, y] = state;
+                cell.isAlife = state;
             }
         }
 
-        public void AddCell(int x, int y)
-        {
-            UpdateCell(x, y, state:true);
-        }
+        //public void AddCell(int x, int y)
+        //{
+        //    UpdateCell(x, y, state:true);
+        //}
 
-        public void RemoveCell(int x, int y)
-        {
-            UpdateCell(x, y, state: false);
-        }
+        //public void RemoveCell(int x, int y)
+        //{
+        //    UpdateCell(x, y, state: false);
+        //}
     }
 
 
