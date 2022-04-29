@@ -9,7 +9,7 @@ namespace LifeInDeath
     public class GameEngine
     {
         public uint CurrentGeneration { get; private set; }
-        private bool[,] field;
+        private Cell[] field;
         private readonly int rows;
         private readonly int cols;
         
@@ -18,14 +18,26 @@ namespace LifeInDeath
         {
             this.rows = rows;
             this.cols = cols;
-            field = new bool[cols, rows];
+            field = new Cell[cols * rows];
             Random random = new Random();
-            for (int x = 0; x < cols; x++)
+            int x = 0, 
+                y = 0;
+
+            foreach (var cell in field)
             {
-                for (int y = 0; y < rows; y++)
+                cell.isAlife = random.Next(density) == 0;
+                cell.Fraction.id = random.Next(1, 2);
+
+                if (x > rows)
                 {
-                    field[x, y] = random.Next(density) == 0;
+                    x = 0;
+                    y++;
                 }
+
+                cell.xPos = x;
+                cell.yPos = y;
+
+                x++;
             }
         }
 
@@ -41,7 +53,7 @@ namespace LifeInDeath
                     int row = (y + j + rows) % rows;
 
                     bool isSelfChecking = col == x && row == y;
-                    var hasLife = field[col, row];
+                    var hasLife = field[col, row].isAlife;
 
                     if (hasLife && !isSelfChecking)
                     {
@@ -55,22 +67,22 @@ namespace LifeInDeath
 
         public void NextGenegation()
         {
-            var newField = new bool[cols, rows];
+            var newField = field;
 
             for (int x = 0; x < cols; x++)
             {
                 for (int y = 0; y < rows; y++)
                 {
-                    var neighboursCount = CountNeighbours(x, y);
-                    var haslLife = field[x, y];
+                    var neighboursCount = CountNeighbours(x , y);
+                    var haslLife = field[x, y].isAlife;
 
                     if (!haslLife && neighboursCount == 3)
                     {
-                        newField[x, y] = true;
+                        newField[x, y].isAlife = true;
                     }
                     else if (haslLife && neighboursCount < 2 || neighboursCount > 3)
                     {
-                        newField[x, y] = false;
+                        newField[x, y].isAlife = false;
                     }
                     else
                     {
@@ -83,9 +95,9 @@ namespace LifeInDeath
             CurrentGeneration++;
         }
 
-        public bool[,] GetCurrentGeneration()
+        public Cell[,] GetCurrentGeneration()
         {
-            var result = new bool[cols, rows];
+            var result = new Cell[cols, rows];
             for (int x = 0; x < cols; x++)
             {
                 for (int y = 0; y < rows; y++)
