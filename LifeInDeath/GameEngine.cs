@@ -19,50 +19,29 @@ namespace LifeInDeath
             this.rows = rows;
             this.cols = cols;
             field = new Cell[cols * rows];
+
             Random random = new Random();
-            int x = 0, 
-                y = 0;
+            int x = 1, 
+                y = 1;
 
-            foreach (var cell in field)
+            for (int i = 0; i < field.Length; i++)
             {
-                cell.isAlife = random.Next(density) == 0;
-                cell.Fraction.id = random.Next(1, 2);
-
-                if (x > rows)
+                if (x > cols)
                 {
-                    x = 0;
+                    x = 1;
                     y++;
                 }
 
-                cell.xPos = x;
-                cell.yPos = y;
+                field[i] = new Cell();
+
+                field[i].xPos = x;
+                field[i].yPos = y;
                 x++;
+
+                field[i].isAlife = random.Next(density) == 0;
+                field[i].fracrion = random.Next(1, 3);
             }
         }
-
-        //private int CountNeighbours(int x, int y)
-        //{
-        //    int count = 0;
-
-        //    for (int i = -1; i < 2; i++)
-        //    {
-        //        for (int j = -1; j < 2; j++)
-        //        {
-        //            int col = (x + i + cols) % cols;
-        //            int row = (y + j + rows) % rows;
-
-        //            bool isSelfChecking = col == x && row == y;
-        //            var hasLife = field[col, row].isAlife;
-
-        //            if (hasLife && !isSelfChecking)
-        //            {
-        //                count++;
-        //            }
-        //        }
-        //    }
-
-        //    return count;
-        //}
 
         private int CountNeighbours(Cell cell)
         {
@@ -75,12 +54,16 @@ namespace LifeInDeath
                     int cellCol = (cell.xPos + i + cols) % cols;
                     int cellRow = (cell.yPos + j + rows) % rows;
 
-                    bool isSelfChecking = cellCol == x && cellRow == y;
-                    var hasLife = field[cellCol, cellRow].isAlife;
+                    bool isSelfChecking = cellCol == cell.xPos && cellRow == cell.yPos;
 
-                    if (hasLife && !isSelfChecking)
+                    var neighbor = field.FirstOrDefault(c => c.xPos == cellCol && c.yPos == cellRow);
+
+                    if (neighbor != null)
                     {
-                        count++;
+                        if (neighbor.isAlife && !isSelfChecking)
+                        {
+                            count++;
+                        }
                     }
                 }
             }

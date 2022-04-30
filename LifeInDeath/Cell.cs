@@ -12,10 +12,10 @@ namespace LifeInDeath
         public int yPos;
         public bool isAlife = false;
 
-        public Fraction Fraction { get; set; }
+        //public Fraction Fraction { get; set; }
+        public int fracrion;
 
-
-        public Cell(int x, int y, bool willBeAlive)
+        public Cell(int x=0, int y=0, bool willBeAlive=false)
         {
             xPos = x;
             yPos = y;
