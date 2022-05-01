@@ -55,15 +55,27 @@ namespace LifeInDeath
                     if (neighbour.isAlife && !isSelfChecking)
                         countAliveNeighbours++;
 
-                    bool checkEnemiesAround = neighbour.fracrion != cell.fracrion;
+                    bool isNeighborEnemy = neighbour.fracrion != cell.fracrion;
 
-                    if (checkEnemiesAround && !isSelfChecking && neighbour.isAlife)
+                    if (isNeighborEnemy && !isSelfChecking && neighbour.isAlife)
                         countAliveEnemiesAround++;
 
-                    bool checkAliveAllyAround = neighbour.fracrion == cell.fracrion;
+                    bool isNeighborAlly = neighbour.fracrion == cell.fracrion;
 
-                    if (checkAliveAllyAround && !isSelfChecking && neighbour.isAlife)
+                    if (isNeighborAlly && !isSelfChecking && neighbour.isAlife)
                         countAliveAllyAround++;
+                }
+            }
+
+            if (countAliveEnemiesAround > countAliveAllyAround)
+            {
+                if (cell.fracrion == 1)
+                {
+                    cell.fracrion = 2;
+                }
+                else
+                {
+                    cell.fracrion = 1;
                 }
             }
 
