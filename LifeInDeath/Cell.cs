@@ -24,5 +24,7 @@ namespace LifeInDeath
         {
             return this.xPos == cell.xPos && this.yPos == cell.yPos;
         }
+
+
     }
 }

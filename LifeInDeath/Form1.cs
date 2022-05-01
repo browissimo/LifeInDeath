@@ -31,6 +31,11 @@ namespace LifeInDeath
             StartGame();
         }
 
+        private void bContinue_Click(object sender, EventArgs e)
+        {
+            ContinueGame();
+        }
+
         private void bStop_Click(object sender, EventArgs e)
         {
             StopGame();
@@ -47,17 +52,28 @@ namespace LifeInDeath
             nudDensity.Enabled = false;
             resolution = (int)nudResolution.Value;
 
-            gameEngine = new GameEngine
-                (
-                rows: pictureBox1.Height / resolution,
-                cols: pictureBox1.Width / resolution,
-                density: (int)nudDensity.Minimum + (int)nudDensity.Maximum - (int)nudDensity.Value
-                ) ;
+            FieldСharacteristics fieldСharacteristics = new FieldСharacteristics(rows: pictureBox1.Height / resolution,
+                                                                                 columns: pictureBox1.Width / resolution,
+                                                                                 density: (int)nudDensity.Minimum + (int)nudDensity.Maximum - (int)nudDensity.Value);
+
+            gameEngine = new GameEngine(fieldСharacteristics) ;
 
             Text = $"Generation {gameEngine.CurrentGeneration}";
             pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             graphics = Graphics.FromImage(pictureBox1.Image);
             timer1.Start();
+        }
+
+        private void ContinueGame()
+        {
+            if (timer1.Enabled)
+            {
+                return;
+            }
+
+            timer1.Start();
+            nudDensity.Enabled = false;
+            nudResolution.Enabled = false;
         }
 
         private void StopGame()
@@ -119,6 +135,7 @@ namespace LifeInDeath
                 gameEngine.RemoveCell(x, y);
             }
         }
+
 
     }
 }

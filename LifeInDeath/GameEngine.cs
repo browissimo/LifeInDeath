@@ -14,21 +14,18 @@ namespace LifeInDeath
         private readonly int cols;
         
 
-        public GameEngine(int rows, int cols, int density)
+        public GameEngine(FieldСharacteristics fieldСharacteristics)
         {
-            this.rows = rows;
-            this.cols = cols;
+            this.rows = fieldСharacteristics.rows;
+            this.cols = fieldСharacteristics.columns;
             field = new Cell[cols, rows];
-
             Random random = new Random();
-            int x = 1, 
-                y = 1;
 
             for (int i = 0; i < field.GetLength(0); i++)
             {
                 for (int j = 0; j < field.GetLength(1); j++)
                 {
-                    var isAlive = random.Next(density) == 0;
+                    var isAlive = random.Next(fieldСharacteristics.density) == 0;
                     field[i, j] = new Cell(i,j, isAlive);
                     field[i, j].fracrion = random.Next(1, 3);
                 }

@@ -38,6 +38,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.bContinue = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -58,6 +59,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.bContinue);
             this.splitContainer1.Panel1.Controls.Add(this.bStop);
             this.splitContainer1.Panel1.Controls.Add(this.bStart);
             this.splitContainer1.Panel1.Controls.Add(this.nudDensity);
@@ -75,9 +77,9 @@
             // bStop
             // 
             this.bStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bStop.Location = new System.Drawing.Point(7, 125);
+            this.bStop.Location = new System.Drawing.Point(7, 161);
             this.bStop.Name = "bStop";
-            this.bStop.Size = new System.Drawing.Size(70, 30);
+            this.bStop.Size = new System.Drawing.Size(76, 30);
             this.bStop.TabIndex = 5;
             this.bStop.Text = "Stop";
             this.bStop.UseVisualStyleBackColor = true;
@@ -88,7 +90,7 @@
             this.bStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.bStart.Location = new System.Drawing.Point(7, 89);
             this.bStart.Name = "bStart";
-            this.bStart.Size = new System.Drawing.Size(70, 30);
+            this.bStart.Size = new System.Drawing.Size(76, 30);
             this.bStart.TabIndex = 4;
             this.bStart.Text = " Start";
             this.bStart.UseVisualStyleBackColor = true;
@@ -108,11 +110,11 @@
             0,
             0});
             this.nudDensity.Name = "nudDensity";
-            this.nudDensity.Size = new System.Drawing.Size(70, 20);
+            this.nudDensity.Size = new System.Drawing.Size(76, 20);
             this.nudDensity.TabIndex = 3;
             this.nudDensity.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudDensity.Value = new decimal(new int[] {
-            20,
+            10,
             0,
             0,
             0});
@@ -141,7 +143,7 @@
             0,
             0});
             this.nudResolution.Name = "nudResolution";
-            this.nudResolution.Size = new System.Drawing.Size(70, 20);
+            this.nudResolution.Size = new System.Drawing.Size(76, 20);
             this.nudResolution.TabIndex = 1;
             this.nudResolution.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudResolution.Value = new decimal(new int[] {
@@ -175,6 +177,17 @@
             this.timer1.Interval = 40;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // bContinue
+            // 
+            this.bContinue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.bContinue.Location = new System.Drawing.Point(7, 125);
+            this.bContinue.Name = "bContinue";
+            this.bContinue.Size = new System.Drawing.Size(76, 30);
+            this.bContinue.TabIndex = 6;
+            this.bContinue.Text = "Continue";
+            this.bContinue.UseVisualStyleBackColor = true;
+            this.bContinue.Click += new System.EventHandler(this.bContinue_Click);
+            // 
             // LifeInDeath
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -207,6 +220,7 @@
         private System.Windows.Forms.NumericUpDown nudDensity;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button bContinue;
     }
 }
 
