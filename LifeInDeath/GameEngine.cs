@@ -9,7 +9,7 @@ namespace LifeInDeath
     public class GameEngine
     {
         public uint CurrentGeneration { get; private set; }
-        private Cell[] field;
+        private Cell[,] field;
         private readonly int rows;
         private readonly int cols;
         
@@ -18,57 +18,56 @@ namespace LifeInDeath
         {
             this.rows = rows;
             this.cols = cols;
-            field = new Cell[cols * rows];
+            field = new Cell[cols, rows];
 
             Random random = new Random();
             int x = 1, 
                 y = 1;
 
-            for (int i = 0; i < field.Length; i++)
+            for (int i = 0; i < field.GetLength(0); i++)
             {
-                if (x > cols)
+                for (int j = 0; j < field.GetLength(1); j++)
                 {
-                    x = 1;
-                    y++;
+                    var isAlive = random.Next(density) == 0;
+                    field[i, j] = new Cell(i,j, isAlive);
+                    field[i, j].fracrion = random.Next(1, 3);
                 }
-
-                field[i] = new Cell();
-
-                field[i].xPos = x;
-                field[i].yPos = y;
-                x++;
-
-                field[i].isAlife = random.Next(density) == 0;
-                field[i].fracrion = random.Next(1, 3);
             }
         }
 
         private int CountNeighbours(Cell cell)
         {
-            int count = 0;
+            int countAliveNeighbours = 0;
+            int countAliveEnemiesAround = 0;
+            int countAliveAllyAround = 0;
 
             for (int i = -1; i < 2; i++)
             {
                 for (int j = -1; j < 2; j++)
                 {
-                    int cellCol = (cell.xPos + i + cols) % cols;
-                    int cellRow = (cell.yPos + j + rows) % rows;
+                    int neighbourCellCol = (cell.xPos + i + cols) % cols; 
+                    int neighbourCellRow = (cell.yPos + j + rows) % rows;
 
-                    bool isSelfChecking = cellCol == cell.xPos && cellRow == cell.yPos;
+                    Cell neighbour = field[neighbourCellCol, neighbourCellRow];
 
-                    var neighbor = field.FirstOrDefault(c => c.xPos == cellCol && c.yPos == cellRow);
+                    bool isSelfChecking = cell.checkingForOwnCoordinates(neighbour);
 
-                    if (neighbor != null)
-                    {
-                        if (neighbor.isAlife && !isSelfChecking)
-                        {
-                            count++;
-                        }
-                    }
+                    if (neighbour.isAlife && !isSelfChecking)
+                        countAliveNeighbours++;
+
+                    bool checkEnemiesAround = neighbour.fracrion != cell.fracrion;
+
+                    if (checkEnemiesAround && !isSelfChecking && neighbour.isAlife)
+                        countAliveEnemiesAround++;
+
+                    bool checkAliveAllyAround = neighbour.fracrion == cell.fracrion;
+
+                    if (checkAliveAllyAround && !isSelfChecking && neighbour.isAlife)
+                        countAliveAllyAround++;
                 }
             }
 
-            return count;
+            return countAliveNeighbours;
         }
 
         public void NextGenegation()
@@ -94,9 +93,9 @@ namespace LifeInDeath
             CurrentGeneration++;
         }
 
-        public Cell[] GetCurrentGeneration()
+        public Cell[,] GetCurrentGeneration()
         {
-            var result = new Cell[cols * rows];
+            var result = new Cell[cols, rows];
             
             Array.Copy(field, result, cols * rows);
             
@@ -116,15 +115,17 @@ namespace LifeInDeath
             }
         }
 
-        //public void AddCell(int x, int y)
-        //{
-        //    UpdateCell(x, y, state:true);
-        //}
+        public void AddCell(int x, int y)
+        {
+            var cell = field[x,y];
+            UpdateCell(cell, state: true);
+        }
 
-        //public void RemoveCell(int x, int y)
-        //{
-        //    UpdateCell(x, y, state: false);
-        //}
+        public void RemoveCell(int x, int y)
+        {
+            var cell = field[x, y];
+            UpdateCell(cell, state: false);
+        }
     }
 
 

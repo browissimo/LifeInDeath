@@ -11,15 +11,18 @@ namespace LifeInDeath
         public int xPos;
         public int yPos;
         public bool isAlife = false;
-
-        //public Fraction Fraction { get; set; }
         public int fracrion;
 
-        public Cell(int x=0, int y=0, bool willBeAlive=false)
+        public Cell(int x, int y, bool willBeAlive)
         {
             xPos = x;
             yPos = y;
             this.isAlife = willBeAlive;
+        }
+
+        public bool checkingForOwnCoordinates(Cell cell)
+        {
+            return this.xPos == cell.xPos && this.yPos == cell.yPos;
         }
     }
 }

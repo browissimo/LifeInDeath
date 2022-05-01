@@ -81,47 +81,44 @@ namespace LifeInDeath
             {
                 if (cell.isAlife)
                 {
-                    graphics.FillRectangle(Brushes.Crimson, cell.xPos * resolution, cell.yPos * resolution, resolution - 1, resolution - 1);
+                    if (cell.fracrion == 1)
+                    {
+                        graphics.FillRectangle(Brushes.Crimson, cell.xPos * resolution, cell.yPos * resolution, resolution - 1, resolution - 1);
+                    }
+                    else
+                    {
+                        graphics.FillRectangle(Brushes.Green, cell.xPos * resolution, cell.yPos * resolution, resolution - 1, resolution - 1);
+                    }
+                   
                 }
             }
-
-            //for (int x = 0; x < field.GetLength(0); x++)
-            //{
-            //    for (int y = 0; y < field.GetLength(1); y++)
-            //    {
-            //        if (field[x,y])
-            //        {
-            //            graphics.FillRectangle(Brushes.Crimson, x * resolution, y * resolution, resolution - 1, resolution - 1);
-            //        }
-            //    }
-            //}
 
             pictureBox1.Refresh();
             Text = $"Generation {gameEngine.CurrentGeneration}";
             gameEngine.NextGenegation();
         }
- 
 
-        //private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
-        //{
-        //    if (!timer1.Enabled)
-        //        return;
 
-        //    if (e.Button == MouseButtons.Left)
-        //    {
-        //        var x = e.Location.X / resolution;
-        //        var y = e.Location.Y / resolution;
-        //        gameEngine.AddCell(x, y);
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!timer1.Enabled)
+                return;
 
-        //    }
+            if (e.Button == MouseButtons.Left)
+            {
+                var x = e.Location.X / resolution;
+                var y = e.Location.Y / resolution;
+                gameEngine.AddCell(x, y);
 
-        //    if (e.Button == MouseButtons.Right)
-        //    {
-        //        var x = e.Location.X / resolution;
-        //        var y = e.Location.Y / resolution;
-        //        gameEngine.RemoveCell(x, y);
-        //    }
-        //}
-       
+            }
+
+            if (e.Button == MouseButtons.Right)
+            {
+                var x = e.Location.X / resolution;
+                var y = e.Location.Y / resolution;
+                gameEngine.RemoveCell(x, y);
+            }
+        }
+
     }
 }
