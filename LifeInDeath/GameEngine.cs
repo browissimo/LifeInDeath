@@ -111,29 +111,28 @@ namespace LifeInDeath
             return result;
         }
 
-        private bool ValidateCellPosition(Cell cell)
-        {
-            return cell.xPos >= 0 && cell.yPos >= 0 && cell.xPos < cols && cell.yPos < rows;
-        }
-
-        private void UpdateCell(Cell cell, bool state)
-        {
-            if (ValidateCellPosition(cell))
-            {
-                cell.isAlife = state;
-            }
-        }
-
         public void AddCell(int x, int y)
         {
-            var cell = field[x,y];
-            UpdateCell(cell, state: true);
+            try
+            {
+                field[x, y].isAlife = true;
+            }
+            catch
+            {
+                return;
+            }
         }
 
         public void RemoveCell(int x, int y)
         {
-            var cell = field[x, y];
-            UpdateCell(cell, state: false);
+            try
+            {
+                field[x, y].isAlife = false;
+            }
+            catch (Exception)
+            {
+                return;
+            }
         }
     }
 
