@@ -103,7 +103,7 @@ namespace LifeInDeath
                     }
                     else
                     {
-                        graphics.FillRectangle(Brushes.Green, cell.xPos * resolution, cell.yPos * resolution, resolution - 1, resolution - 1);
+                        graphics.FillRectangle(Brushes.Aqua, cell.xPos * resolution, cell.yPos * resolution, resolution - 1, resolution - 1);
                     }
                    
                 }

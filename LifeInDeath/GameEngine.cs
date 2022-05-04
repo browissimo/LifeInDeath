@@ -16,8 +16,8 @@ namespace LifeInDeath
 
         public GameEngine(FieldСharacteristics fieldСharacteristics)
         {
-            this.rows = fieldСharacteristics.rows;
-            this.cols = fieldСharacteristics.columns;
+            rows = fieldСharacteristics.rows;
+            cols = fieldСharacteristics.columns;
             field = new Cell[cols, rows];
             Random random = new Random();
 
@@ -32,9 +32,8 @@ namespace LifeInDeath
             }
         }
 
-        private int CountNeighbours(Cell cell)
+        private int CountNeighboursByFraction(Cell cell)
         {
-            int countAliveNeighbours = 0;
             int countAliveEnemiesAround = 0;
             int countAliveAllyAround = 0;
 
@@ -42,73 +41,43 @@ namespace LifeInDeath
             {
                 for (int j = -1; j < 2; j++)
                 {
-                    int neighbourCellCol = (cell.xPos + i + cols) % cols; 
+                    int neighbourCellColumn = (cell.xPos + i + cols) % cols; 
                     int neighbourCellRow = (cell.yPos + j + rows) % rows;
 
-                    Cell neighbour = field[neighbourCellCol, neighbourCellRow];
+                    Cell neighbour = field[neighbourCellColumn, neighbourCellRow];
 
                     bool isSelfChecking = cell.checkingForOwnCoordinates(neighbour);
 
-                    if (neighbour.isAlife && !isSelfChecking)
-                        countAliveNeighbours++;
-
-                    bool isNeighborEnemy = neighbour.fracrion != cell.fracrion;
-
-                    if (isNeighborEnemy && !isSelfChecking && neighbour.isAlife)
+                    if (neighbour.fracrion != cell.fracrion && !isSelfChecking && neighbour.isAlife)
                         countAliveEnemiesAround++;
-
-                    bool isNeighborAlly = neighbour.fracrion == cell.fracrion;
-
-                    if (isNeighborAlly && !isSelfChecking && neighbour.isAlife)
+                    else if (neighbour.fracrion == cell.fracrion && !isSelfChecking && neighbour.isAlife)
                         countAliveAllyAround++;
                 }
             }
 
-            if (countAliveEnemiesAround > countAliveAllyAround)
-            {
-                if (cell.fracrion == 1)
-                {
-                    cell.fracrion = 2;
-                }
-                else
-                {
-                    cell.fracrion = 1;
-                }
-            }
+            cell.ReactionOnNeighbours(countAliveAllyAround, countAliveEnemiesAround);
 
-            return countAliveNeighbours;
+            return countAliveAllyAround + countAliveEnemiesAround;
         }
+
+
 
         public void NextGenegation()
         {
-            var newField = field;
-
-            foreach (var cell in newField)
+            foreach (var cell in field)
             {
-                var neighboursCount = CountNeighbours(cell);
-                var hasLife = cell.isAlife;
-
-                if (!hasLife && neighboursCount == 3)
-                {
+                var neighboursCount = CountNeighboursByFraction(cell);
+                if (!cell.isAlife && neighboursCount == 3)
                     cell.isAlife = true;
-                }
-                else if (hasLife && neighboursCount < 2 || neighboursCount > 3)
-                {
+                else if (cell.isAlife && neighboursCount < 2 || neighboursCount > 3)
                     cell.isAlife = false;
-                }
             }
-
-            field = newField;
             CurrentGeneration++;
         }
 
         public Cell[,] GetCurrentGeneration()
         {
-            var result = new Cell[cols, rows];
-            
-            Array.Copy(field, result, cols * rows);
-            
-            return result;
+            return field;
         }
 
         public void AddCell(int x, int y)
