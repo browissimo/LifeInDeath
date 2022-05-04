@@ -186,6 +186,7 @@
             this.bContinue.TabIndex = 6;
             this.bContinue.Text = "Continue";
             this.bContinue.UseVisualStyleBackColor = true;
+            this.bContinue.Enabled = false;
             this.bContinue.Click += new System.EventHandler(this.bContinue_Click);
             // 
             // LifeInDeath

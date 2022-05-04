@@ -74,6 +74,7 @@ namespace LifeInDeath
             timer1.Start();
             nudDensity.Enabled = false;
             nudResolution.Enabled = false;
+            bContinue.Enabled = false;
         }
 
         private void StopGame()
@@ -86,6 +87,7 @@ namespace LifeInDeath
             timer1.Stop();
             nudDensity.Enabled = true;
             nudResolution.Enabled = true;
+            bContinue.Enabled = true;
         }
 
         private void DrawNextGenegation()
